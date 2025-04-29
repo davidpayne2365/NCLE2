@@ -6,128 +6,87 @@
   <title>NCLE Study Content</title>
   <style>
     /* Dark theme base */
-    body {
-      background-color: #121212;
-      color: #e0e0e0;
-      font-family: sans-serif;
-      margin: 0;
-      padding: 1rem;
-      line-height: 1.6;
-      max-width: 800px;
-      margin: auto;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 1rem;
-      color: #ffffff;
-    }
-    details {
-      margin-bottom: 1rem;
-      background-color: #1f1f1f;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-      overflow: hidden;
-    }
-    summary {
+    body { background: #121212; color: #e0e0e0; font-family: sans-serif; margin: 0; padding: 1rem; line-height: 1.6; max-width: 800px; margin: auto; }
+    h1 { text-align: center; margin-bottom: 1rem; color: #fff; }
+    nav { margin-bottom: 1rem; background: #1f1f1f; padding: 0.5rem; border-radius: 8px; }
+    nav ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; }
+    nav li { margin: 0.25rem 0.5rem; }
+    nav a { color: #82b1ff; text-decoration: none; font-size: 0.9rem; }
+    nav a:hover { text-decoration: underline; }
+    section { margin-bottom: 2rem; }
+    h2 { background: #272727; padding: 0.75rem 1rem; border-radius: 8px 8px 0 0; margin: 0; font-size: 1.1rem; }
+    pre { background: #1e1e1e; padding: 1rem; margin: 0; white-space: pre-wrap; word-break: break-word; font-family: inherit; font-size: 1rem; border-radius: 0 0 8px 8px; }
+    /* Floating back-to-top button */
+    #backTopBtn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
       background-color: #272727;
-      padding: 0.75rem 1rem;
-      font-weight: bold;
+      color: #e0e0e0;
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 1.5rem;
       cursor: pointer;
-      user-select: none;
-      color: #b3b3b3;
-      border-bottom: 1px solid #333;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
     }
-    summary:hover {
-      background-color: #2f2f2f;
-      color: #ffffff;
-    }
-    pre {
-      background-color: #1e1e1e;
-      color: #dcdcdc;
-      padding: 0.75rem 1rem;
-      overflow-x: hidden;
-      white-space: pre-wrap;
-      word-break: break-word;
-      margin: 0;
-      font-family: inherit;
-      font-size: 1rem;
-    }
-    /* Responsive adjustments */
+    #backTopBtn:hover { background-color: #3a3a3a; }
     @media (max-width: 480px) {
-      body {
-        padding: 0.5rem;
-      }
-      pre {
-        font-size: 0.95rem;
-        padding: 0.5rem;
-      }
-      summary {
-        padding: 0.5rem;
-      }
-    }
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #1e1e1e;
-    }
-    ::-webkit-scrollbar-thumb {
-      background-color: #444;
-      border-radius: 4px;
-    }
-    a {
-      color: #82b1ff;
+      body { padding: 0.5rem; }
+      pre { font-size: 0.95rem; padding: 0.75rem; }
+      h2 { font-size: 1rem; padding: 0.5rem; }
+      #backTopBtn { width: 40px; height: 40px; font-size: 1.2rem; bottom: 15px; right: 15px; }
     }
   </style>
 </head>
 <body>
+  <!-- Top anchor -->
+  <div id="top"></div>
   <h1>NCLE Study Content</h1>
+  <nav id="toc"><ul></ul></nav>
   <div id="content"></div>
-
+  <!-- Floating Back to Top Button -->
+  <button id="backTopBtn" title="Back to top">↑</button>
   <script>
-    // --- CONFIGURE these to your GitHub repo ---
     const owner = 'davidpayne2365';
     const repo = 'NCLE2';
-    const branch = 'main'; // or your default branch
-
-    // Fetch list of .txt files from GitHub API
+    const branch = 'main';
+    function sanitize(name) {
+      return name.replace(/[^a-z0-9]+/gi,'-').replace(/^[-]+|[-]+$/g,'').toLowerCase();
+    }
+    // Populate TOC and content
     fetch(`https://api.github.com/repos/${owner}/${repo}/contents?ref=${branch}`)
       .then(res => res.json())
       .then(items => {
-        const txtFiles = items
-          .filter(i => i.type === 'file' && i.name.toLowerCase().endsWith('.txt'))
-          .map(i => i.name);
-
-        const container = document.getElementById('content');
-        txtFiles.forEach(fileName => {
-          const details = document.createElement('details');
-          const summary = document.createElement('summary');
-          summary.textContent = fileName;
-          details.appendChild(summary);
-
-          // Fetch raw file content from GitHub
-          const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${encodeURIComponent(fileName)}`;
-          fetch(rawUrl)
-            .then(res => res.text())
-            .then(text => {
-              const pre = document.createElement('pre');
-              pre.textContent = text;
-              details.appendChild(pre);
-            })
-            .catch(err => {
-              const errMsg = document.createElement('pre');
-              errMsg.textContent = 'Error loading ' + fileName;
-              details.appendChild(errMsg);
-            });
-
-          container.appendChild(details);
+        const txts = items.filter(i => i.type === 'file' && i.name.toLowerCase().endsWith('.txt')).map(i => i.name);
+        const tocUl = document.querySelector('#toc ul');
+        const content = document.getElementById('content');
+        txts.forEach(name => {
+          const id = sanitize(name);
+          // TOC link
+          const li = document.createElement('li');
+          const a = document.createElement('a'); a.href = `#${id}`; a.textContent = name;
+          li.appendChild(a); tocUl.appendChild(li);
+          // Section
+          const section = document.createElement('section');
+          const h2 = document.createElement('h2'); h2.id = id; h2.textContent = name;
+          const pre = document.createElement('pre');
+          section.appendChild(h2); section.appendChild(pre);
+          content.appendChild(section);
+          // Fetch file content
+          const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${encodeURIComponent(name)}`;
+          fetch(rawUrl).then(r => r.text()).then(txt => pre.textContent = txt).catch(() => pre.textContent = 'Error loading');
         });
       })
-      .catch(err => {
-        document.getElementById('content').textContent = 'Failed to load repository contents';
-        console.error(err);
-      });
+      .catch(err => console.error(err));
+    // Back to top button behavior
+    const backBtn = document.getElementById('backTopBtn');
+    backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   </script>
 </body>
 </html>
