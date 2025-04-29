@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NCLE Study Content</title>
+  <style>
+    /* Dark theme base */
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 1rem;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+    details {
+      margin-bottom: 1rem;
+      background-color: #1f1f1f;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      overflow: hidden;
+    }
+    summary {
+      background-color: #272727;
+      padding: 0.75rem 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+      color: #b3b3b3;
+      border-bottom: 1px solid #333;
+    }
+    summary:hover {
+      background-color: #2f2f2f;
+      color: #ffffff;
+    }
+    pre {
+      background-color: #1e1e1e;
+      color: #dcdcdc;
+      padding: 0.75rem 1rem;
+      overflow-x: auto;
+      margin: 0;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1e1e1e;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: #444;
+      border-radius: 4px;
+    }
+    a {
+      color: #82b1ff;
+    }
+  </style>
+</head>
+<body>
+  <h1>NCLE Study Content</h1>
+  <div id="content"></div>
+
+  <script>
+    // --- CONFIGURE these to your GitHub repo ---
+    const owner = 'YOUR_GITHUB_USERNAME';
+    const repo = 'YOUR_REPO_NAME';
+    const branch = 'main'; // or 'master'
+
+    // Fetch list of .txt files from GitHub API
+    fetch(`https://api.github.com/repos/${owner}/${repo}/contents?ref=${branch}`)
+      .then(res => res.json())
+      .then(items => {
+        const txtFiles = items
+          .filter(i => i.type === 'file' && i.name.toLowerCase().endsWith('.txt'))
+          .map(i => i.name);
+
+        const container = document.getElementById('content');
+        txtFiles.forEach(fileName => {
+          const details = document.createElement('details');
+          const summary = document.createElement('summary');
+          summary.textContent = fileName;
+          details.appendChild(summary);
+
+          // Fetch raw file content
+          const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${encodeURIComponent(fileName)}`;
+          fetch(rawUrl)
+            .then(res => res.text())
+            .then(text => {
+              const pre = document.createElement('pre');
+              pre.textContent = text;
+              details.appendChild(pre);
+            })
+            .catch(err => {
+              const errMsg = document.createElement('pre');
+              errMsg.textContent = 'Error loading ' + fileName;
+              details.appendChild(errMsg);
+            });
+
+          container.appendChild(details);
+        });
+      })
+      .catch(err => {
+        document.getElementById('content').textContent = 'Failed to load repository contents';
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
