@@ -8,25 +8,28 @@
     /* Dark theme base */
     body { background: #121212; color: #e0e0e0; font-family: sans-serif; margin: 0; padding: 1rem; line-height: 1.6; max-width: 800px; margin: auto; }
     h1 { text-align: center; margin-bottom: 1rem; color: #fff; }
-    nav { margin-bottom: 1rem; background: #1f1f1f; padding: 0.5rem; border-radius: 8px; }
-    nav ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; }
-    nav li { margin: 0.25rem 0.5rem; }
-    nav a { color: #82b1ff; text-decoration: none; font-size: 0.9rem; }
-    nav a:hover { text-decoration: underline; }
-    section { margin-bottom: 2rem; }
-    h2 { background: #272727; padding: 0.75rem 1rem; border-radius: 8px 8px 0 0; margin: 0; font-size: 1.1rem; }
-    pre { background: #1e1e1e; padding: 1rem; margin: 0; white-space: pre-wrap; word-break: break-word; font-family: inherit; font-size: 1rem; border-radius: 0 0 8px 8px; }
-    /* Floating back-to-top button */
-    #backTopBtn {
+    .file-list { margin-bottom: 1rem; background: #1f1f1f; padding: 0.5rem; border-radius: 8px; }
+    .file-list ul { list-style: none; padding: 0; margin: 0; }
+    .file-list li { display: flex; align-items: center; margin: 0.5rem 0; }
+    .file-list input[type="checkbox"] { margin-right: 0.5rem; }
+    .file-list button { background: #272727; color: #e0e0e0; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 1rem; text-align: left; flex: 1; }
+    .file-list button:hover { background: #3a3a3a; }
+
+    .file-detail { display: none; margin-bottom: 2rem; }
+    .file-detail h2 { background: #272727; padding: 0.75rem 1rem; border-radius: 8px 8px 0 0; margin: 0; font-size: 1.2rem; }
+    .file-detail pre { background: #1e1e1e; padding: 1rem; margin: 0; white-space: pre-wrap; word-break: break-word; font-family: inherit; font-size: 1rem; border-radius: 0 0 8px 8px; }
+
+    /* Floating back-to-list button */
+    .back-button {
       position: fixed;
       bottom: 20px;
       right: 20px;
+      width: 48px;
+      height: 48px;
       background-color: #272727;
       color: #e0e0e0;
       border: none;
       border-radius: 50%;
-      width: 48px;
-      height: 48px;
       font-size: 1.5rem;
       cursor: pointer;
       box-shadow: 0 2px 4px rgba(0,0,0,0.5);
@@ -35,23 +38,32 @@
       justify-content: center;
       z-index: 100;
     }
-    #backTopBtn:hover { background-color: #3a3a3a; }
+    .back-button:hover { background-color: #3a3a3a; }
+
     @media (max-width: 480px) {
       body { padding: 0.5rem; }
-      pre { font-size: 0.95rem; padding: 0.75rem; }
-      h2 { font-size: 1rem; padding: 0.5rem; }
-      #backTopBtn { width: 40px; height: 40px; font-size: 1.2rem; bottom: 15px; right: 15px; }
+      .file-detail h2 { font-size: 1rem; padding: 0.5rem; }
+      .file-detail pre { font-size: 0.95rem; padding: 0.75rem; }
+      .file-list button { font-size: 0.9rem; padding: 0.4rem 0.8rem; }
+      .back-button { width: 40px; height: 40px; font-size: 1.2rem; bottom: 15px; right: 15px; }
     }
   </style>
 </head>
 <body>
-  <!-- Top anchor -->
-  <div id="top"></div>
   <h1>NCLE Study Content</h1>
-  <nav id="toc"><ul></ul></nav>
-  <div id="content"></div>
-  <!-- Floating Back to Top Button -->
-  <button id="backTopBtn" title="Back to top">↑</button>
+
+  <!-- File list view -->
+  <div class="file-list" id="listView">
+    <ul id="fileList"></ul>
+  </div>
+
+  <!-- Detail view -->
+  <div class="file-detail" id="detailView">
+    <h2 id="detailTitle"></h2>
+    <pre id="detailContent"></pre>
+    <button class="back-button" id="backToList">←</button>
+  </div>
+
   <script>
     const owner = 'davidpayne2365';
     const repo = 'NCLE2';
@@ -59,34 +71,48 @@
     function sanitize(name) {
       return name.replace(/[^a-z0-9]+/gi,'-').replace(/^[-]+|[-]+$/g,'').toLowerCase();
     }
-    // Populate TOC and content
+
+    // Fetch list of .txt files from GitHub API
     fetch(`https://api.github.com/repos/${owner}/${repo}/contents?ref=${branch}`)
       .then(res => res.json())
       .then(items => {
-        const txts = items.filter(i => i.type === 'file' && i.name.toLowerCase().endsWith('.txt')).map(i => i.name);
-        const tocUl = document.querySelector('#toc ul');
-        const content = document.getElementById('content');
-        txts.forEach(name => {
-          const id = sanitize(name);
-          // TOC link
+        const txtFiles = items.filter(i => i.type === 'file' && i.name.toLowerCase().endsWith('.txt')).map(i => i.name);
+        const listUl = document.getElementById('fileList');
+
+        txtFiles.forEach(file => {
           const li = document.createElement('li');
-          const a = document.createElement('a'); a.href = `#${id}`; a.textContent = name;
-          li.appendChild(a); tocUl.appendChild(li);
-          // Section
-          const section = document.createElement('section');
-          const h2 = document.createElement('h2'); h2.id = id; h2.textContent = name;
-          const pre = document.createElement('pre');
-          section.appendChild(h2); section.appendChild(pre);
-          content.appendChild(section);
-          // Fetch file content
-          const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${encodeURIComponent(name)}`;
-          fetch(rawUrl).then(r => r.text()).then(txt => pre.textContent = txt).catch(() => pre.textContent = 'Error loading');
+          const chk = document.createElement('input'); chk.type = 'checkbox'; chk.checked = true;
+          const btn = document.createElement('button'); btn.textContent = file;
+          btn.addEventListener('click', () => openDetail(file));
+
+          li.appendChild(chk);
+          li.appendChild(btn);
+          listUl.appendChild(li);
         });
       })
-      .catch(err => console.error(err));
-    // Back to top button behavior
-    const backBtn = document.getElementById('backTopBtn');
-    backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+      .catch(err => console.error('Error fetching file list', err));
+
+    function openDetail(fileName) {
+      document.getElementById('listView').style.display = 'none';
+      const detailView = document.getElementById('detailView');
+      detailView.style.display = 'block';
+
+      const titleEl = document.getElementById('detailTitle');
+      const contentEl = document.getElementById('detailContent');
+      titleEl.textContent = fileName;
+      contentEl.textContent = 'Loading...';
+
+      const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${encodeURIComponent(fileName)}`;
+      fetch(rawUrl)
+        .then(r => r.text())
+        .then(txt => contentEl.textContent = txt)
+        .catch(() => contentEl.textContent = 'Error loading file');
+    }
+
+    document.getElementById('backToList').addEventListener('click', () => {
+      document.getElementById('detailView').style.display = 'none';
+      document.getElementById('listView').style.display = 'block';
+    });
   </script>
 </body>
 </html>
