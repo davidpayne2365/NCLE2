@@ -45,10 +45,25 @@
       background-color: #1e1e1e;
       color: #dcdcdc;
       padding: 0.75rem 1rem;
-      overflow-x: auto;
+      overflow-x: hidden;
+      white-space: pre-wrap;
+      word-break: break-word;
       margin: 0;
       font-family: monospace;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      body {
+        padding: 0.5rem;
+      }
+      pre {
+        font-size: 0.9rem;
+        padding: 0.5rem;
+      }
+      summary {
+        padding: 0.5rem;
+      }
     }
     ::-webkit-scrollbar {
       width: 8px;
