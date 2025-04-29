@@ -1,4 +1,4 @@
-👓 PART 1: What are Soft Contact Lenses, and Why Use Them?
+ PART 1: What are Soft Contact Lenses, and Why Use Them?
 Soft lenses are the most common type of contacts.
 
 They're flexible, sit gently on your eye, and are comfortable right away.
@@ -18,12 +18,12 @@ That extra part helps the lens stay in place and not touch sensitive areas like 
 
 Why not touch the limbus? Because it has important stem cells. Pressing on it can cause long-term damage like new unwanted blood vessels or cell problems.
 
-🧪 PART 3: HEMA and Silicone Hydrogel
+ PART 3: HEMA and Silicone Hydrogel
 Old soft lenses were made from HEMA (Hydroxyethyl methacrylate). Think of it like soft plastic that holds water.
 
 Today, most lenses are made from silicone hydrogel — it's newer and lets more oxygen reach your eye, which is better for eye health.
 
-🧠 PART 4: What is Spherical Equivalent?
+ PART 4: What is Spherical Equivalent?
 Let’s say you wear glasses with astigmatism correction — that’s when your eye isn’t perfectly round. Glasses fix that using two numbers:
 
 A sphere (main focus)
@@ -36,16 +36,16 @@ So what do we do?
 
 We "average" the prescription to get a single focus power. That’s called a spherical equivalent.
 
-✏️ How to Calculate It:
+ How to Calculate It:
 Spherical Equivalent = Sphere + ½(Cylinder)
 
-📌 Example:
+ Example:
 If your glasses say:
 -3.00 -0.50 x180
 Take half of -0.50 (that’s -0.25), and add it to -3.00:
 -3.25 is the spherical equivalent
 
-❓But why would you use spherical equivalent?
+But why would you use spherical equivalent?
 Because:
 
 Toric lenses (for astigmatism) are more expensive
@@ -56,13 +56,13 @@ They sometimes rotate on your eye, causing blurry vision
 
 If your astigmatism is small (like less than -1.00), skipping it won’t hurt your vision much, and the lens is simpler and more comfortable
 
-⚠️ When NOT to Use It
+ When NOT to Use It
 If your astigmatism is more than -1.00, like:
 
 -1.00 or higher for cylinder,
 ...then don’t do spherical equivalent. You’ll lose too much clarity, and vision will be blurry in parts of your view.
 
-👁️ PART 5: Toric Lenses Are a Bit Weird
+ PART 5: Toric Lenses Are a Bit Weird
 Toric lenses (for astigmatism) are:
 
 Heavier at the bottom (prism ballast) so they stay upright
@@ -73,7 +73,7 @@ These features can make them thicker or less comfy
 
 So again, if your cylinder is small (like -0.50), you might skip it and use spherical equivalent to make your life easier.
 
-✅ Final Rule of Thumb
+ Final Rule of Thumb
 Only consider spherical equivalent if:
 
 Cylinder is -0.75 or lower
