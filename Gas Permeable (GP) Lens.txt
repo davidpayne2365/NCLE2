@@ -1,9 +1,9 @@
-🟢 What are Gas Permeable (GP) Lenses?
+ What are Gas Permeable (GP) Lenses?
 GP lenses are small, hard contact lenses that let oxygen pass through (that’s the “gas permeable” part).
 
 They sit on the cornea (the clear front part of the eye).
 
-🟢 Why do we use fluorescein dye with GP lenses?
+ Why do we use fluorescein dye with GP lenses?
 Fluorescein is a yellow-green dye that helps us see how the lens fits on the eye.
 
 When you shine a blue light on the dye using a slit lamp (a fancy eye microscope), you can see patterns of how tears move under the lens.
@@ -12,7 +12,7 @@ Bright green = more tears = space = lens is steep there
 
 Dark or black = no tears = lens is pressing on the eye = bearing or flat there
 
-🟢 2 Main Ways to Fit a GP Lens
+ 2 Main Ways to Fit a GP Lens
 1. Interpalpebral Fit (Apical Clearance)
 "Interpalpebral" means the lens stays between the eyelids, not tucked under them.
 
@@ -43,15 +43,15 @@ You don’t want any super bright pooling or dark pressure spots.
 
 Still needs 1mm of bright green ring around the edge (this means it breathes).
 
-🟢 How to Read the Fluorescein Patterns
+ How to Read the Fluorescein Patterns
 
 What You See	What It Means	What To Do
 Bright Green Center	Pooling – lens is steep here	Maybe flatten it
 Dark Center	Touching – too flat	Maybe steepen it
-Even Green All Over	Good fit!	✅
+Even Green All Over	Good fit!	
 Too Bright Around Edges	Too loose	Flatten or shrink it
 No Green Around Edges	Too tight	Steepen or enlarge it
-🟢 Common Astigmatism Patterns
+ Common Astigmatism Patterns
 "With-the-rule" Astigmatism
 Eye is steeper top to bottom (like a football on its side).
 
@@ -66,12 +66,12 @@ Dumbbell pattern appears sideways.
 
 Lenses tend to slide side-to-side (bad for vision).
 
-🟢 How We Fix Bad Astigmatism Fits
+ How We Fix Bad Astigmatism Fits
 Use a bi-toric or back-toric lens. These are made specially to match the shape of the cornea better and stop the lens from spinning or moving too much.
 
 A front-toric lens won’t help — it doesn’t fix how the back of the lens touches the eye.
 
-🟢 What are Myoflange and Hyperflange?
+ What are Myoflange and Hyperflange?
 
 Flange Type	Used On	What It Does
 Myoflange	Plus lenses (thick centers, thin edges)	Adds thickness to the edge so the lid can grab the lens easier
@@ -82,7 +82,7 @@ Myoflange = more edge (for thick-centered lenses)
 
 Hyperflange = less edge (for thick-edged lenses)
 
-🟢 3:00 & 9:00 Staining (Very Important!)
+ 3:00 & 9:00 Staining (Very Important!)
 If the lens is rubbing too hard on the cornea at the sides, it can dry out the eye at 3:00 and 9:00 positions.
 
 This causes dry spots, poor oxygen flow, and possibly swelling (edema).
